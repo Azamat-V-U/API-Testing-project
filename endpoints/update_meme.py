@@ -16,11 +16,14 @@ class UpdateMeme(BaseEndpoint):
         )
         if self.response.status_code == 200:
             self.json = self.response.json()
-            self.meme_id = self.json["id"]
+            self.meme_id = self.json.get("id")
+            print(f"Meme is created: {self.meme_id}, headers: {self.headers}")
+            self.attach_response(self.json)
+            return self.json, self.response
         else:
             self.json = None
-        print(f"Meme is updated: {type(self.meme_id)}: {self.meme_id}")
-        return self.json, self.response
+            self.attach_response(self.response, is_json=False)
+            return self.response, self.response.text
 
     @allure.step("Send PUT request to the 'BaseUrl/meme/<id>' endpoint without meme id in the url")
     def update_meme_url_empty_meme_id(self, payload=None):
@@ -30,6 +33,7 @@ class UpdateMeme(BaseEndpoint):
             headers=self.headers
 
         )
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send PUT request to the 'BaseUrl/meme/<id>' endpoint without payload data")
@@ -40,6 +44,7 @@ class UpdateMeme(BaseEndpoint):
             headers=self.headers
 
         )
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send PUT request to the 'BaseUrl/meme/<id>' endpoint with invalid headers")
@@ -50,4 +55,5 @@ class UpdateMeme(BaseEndpoint):
             headers=headers
 
         )
+        self.attach_response(self.response, is_json=False)
         return self.response

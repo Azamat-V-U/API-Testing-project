@@ -15,11 +15,14 @@ class CreateMeme(BaseEndpoint):
         )
         if self.response.status_code == 200:
             self.json = self.response.json()
-            self.meme_id = self.json["id"]
-            print(f"Meme is created: {self.json["id"]}, headers: {self.headers}")
+            self.meme_id = self.json.get("id")
+            print(f"Meme is created: {self.meme_id}, headers: {self.headers}")
+            self.attach_response(self.json, is_json=True)
+            return self.json, self.response
         else:
             self.json = None
-        return self.json, self.response
+            self.attach_response(self.response, is_json=False)
+            return self.response, self.response.text
 
     @allure.step("Send POST request to the 'BaseUrl/meme' endpoint with invalid headers")
     def create_meme_invalid_headers(self, payload=None, headers=None):

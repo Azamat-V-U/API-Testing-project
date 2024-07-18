@@ -15,10 +15,14 @@ class CreateToken(BaseEndpoint):
         )
         if self.response.status_code == 200:
             self.json = self.response.json()
-            print(self.json)
+            self.token = self.json.get("token")
+            print(f"Token is created: {self.token}")
+            self.attach_response(self.json, is_json=True)
+            return self.json, self.response
         else:
             self.json = None
-        return self.json, self.response
+            self.attach_response(self.response, is_json=False)
+            return self.response, self.response.text
 
     @allure.step("Send POST request to the 'BaseUrl/authorize' endpoint with invalid payload data")
     def create_token_invalid_data(self, payload=None):
@@ -26,16 +30,17 @@ class CreateToken(BaseEndpoint):
             f"{self.url}/authorize",
             json=payload
         )
-        return self.response
+        self.attach_response(self.response, is_json=False)
+        return self.response, self.response.text
 
     @allure.step("Check the returned json object and the payload name = user")
-    def authorization_response_json_object_verification(self, payload):
+    def response_json_object_verification(self, payload):
         assert "token" in self.response.json(), f"Token not found in the json object"
         assert "user" in self.response.json(), f"User not found in the json object"
         assert self.response.json()["user"] == payload["name"], f"Payload name doesn't match with the user name "
 
     @allure.step("Check that the expected response message is Bad Request")
-    def invalid_json_response_message(self):
+    def invalid_json_response_message_verification(self):
 
         expected_html_message = """
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">

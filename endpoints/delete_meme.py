@@ -15,6 +15,7 @@ class DeleteMeme(BaseEndpoint):
             headers=self.headers
         )
         print(f"Meme is deleted: meme_id {self.meme_id}:{self.response.status_code}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send DELETE request to the 'BaseUrl/meme' endpoint without meme_id")
@@ -24,6 +25,7 @@ class DeleteMeme(BaseEndpoint):
             headers=self.headers
         )
         print(f"Meme isn't deleted: {self.meme_id}:{self.response.status_code}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send DELETE request to the 'BaseUrl/meme/<id>' endpoint with invalid headers")
@@ -34,6 +36,7 @@ class DeleteMeme(BaseEndpoint):
             headers=headers
         )
         print(f"Meme isn't deleted: {self.meme_id}:{self.response.status_code}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Make sure that the response message is Not Found")
@@ -43,7 +46,7 @@ class DeleteMeme(BaseEndpoint):
             f"Expected message '{expected_message} not found in response {self.response.text}'"
 
     @allure.step("Make sure that the response message is Forbidden")
-    def forbidden_response_message(self):
+    def forbidden_response_message_verification(self):
 
         expected_html_message = """
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -64,4 +67,3 @@ class DeleteMeme(BaseEndpoint):
             assert actual_html_message == expected_html_message, \
                 (f"Expected HTML message does not match. \nExpected:\n{expected_html_message}\n\n"
                  f"Got:\n{actual_html_message}")
-

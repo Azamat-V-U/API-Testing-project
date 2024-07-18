@@ -43,6 +43,7 @@ class GetAllMemes(BaseEndpoint):
             self.json = self.response.json()
         else:
             self.json = None
+        self.attach_response(self.response, is_json=False)
         print(f"Status code: {self.response.status_code}")
         return self.json, self.response
 
@@ -67,6 +68,7 @@ class GetOneMeme(BaseEndpoint):
             self.json = self.response.json()
         else:
             self.json = None
+        self.attach_response(self.json)
         print(f"Status code: {self.response.status_code}, json: {self.json}")
         return self.json, self.response
 
@@ -76,6 +78,7 @@ class GetOneMeme(BaseEndpoint):
             f"{self.url}/meme/{meme_id}",
             headers=headers
         )
+        self.attach_response(self.response, is_json=False)
         print(f"Status code: {self.response.status_code}, message: {self.response.text}")
         return self.response
 
@@ -107,22 +110,22 @@ class GetOneMeme(BaseEndpoint):
     def required_value_data_types_verification(self):
         assert self.validate_json_object(self.json, Meme), f"Json object isn't correct"
 
-    @allure.step("Check the expected response message")
-    def token_not_found_response_message_verification(self):
-        expected_html_message = """
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-        <title> 404 Not Found </title>
-        <h1> Not Found </h1>
-        <p> Token not found </p>
-        """
-
-        if expected_html_message:
-            soup = BeautifulSoup(self.response.text, "html.parser")
-            actual_html_message = soup.prettify()
-
-            actual_html_message = re.sub(r'\s+', ' ', actual_html_message.strip())
-            expected_html_message = re.sub(r'\s+', ' ', expected_html_message.strip())
-
-            assert actual_html_message == expected_html_message, \
-                (f"Expected HTML message does not match. \nExpected:\n{expected_html_message}\n\n"
-                 f"Got:\n{actual_html_message}")
+    # @allure.step("Check the expected response message")
+    # def token_not_found_response_message_verification(self):
+    #     expected_html_message = """
+    #     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+    #     <title> 404 Not Found </title>
+    #     <h1> Not Found </h1>
+    #     <p> Token not found </p>
+    #     """
+    #
+    #     if expected_html_message:
+    #         soup = BeautifulSoup(self.response.text, "html.parser")
+    #         actual_html_message = soup.prettify()
+    #
+    #         actual_html_message = re.sub(r'\s+', ' ', actual_html_message.strip())
+    #         expected_html_message = re.sub(r'\s+', ' ', expected_html_message.strip())
+    #
+    #         assert actual_html_message == expected_html_message, \
+    #             (f"Expected HTML message does not match. \nExpected:\n{expected_html_message}\n\n"
+    #              f"Got:\n{actual_html_message}")

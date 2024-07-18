@@ -13,6 +13,7 @@ class GetTokenStatus(BaseEndpoint):
         )
         print(f"{self.url}/authorize/{self.token}")
         print(f"Response message: {self.response.text}, token: {self.token}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send GET request to the 'BaseUrl/authorize/<token>' endpoint with invalid token")
@@ -23,6 +24,7 @@ class GetTokenStatus(BaseEndpoint):
         )
         print(f"{self.url}/authorize/{self.token}")
         print(f"Response message: {self.response.text}, token: {self.token}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send GET request to the 'BaseUrl/authorize' endpoint without a token")
@@ -31,6 +33,7 @@ class GetTokenStatus(BaseEndpoint):
             f"{self.url}/authorize",
         )
         print(f"Response message: {self.response.text}, The session token is: {self.token}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Send GET request to the 'BaseUrl/<token>' endpoint with valid token")
@@ -39,10 +42,11 @@ class GetTokenStatus(BaseEndpoint):
             f"{self.url}/{self.token}",
         )
         print(f"Response message: {self.response.text}, The session token is: {self.token}")
+        self.attach_response(self.response, is_json=False)
         return self.response
 
     @allure.step("Make sure that the response message is correct and contains correct username")
-    def get_token_status_response_message_ok(self, name):
+    def token_found_response_message_verification(self, name):
         expected_message = f"Token is alive. Username is {name}"
         assert expected_message in self.response.text, \
             f"Expected message '{expected_message} not found in response {self.response.text}'"

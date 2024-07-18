@@ -1,4 +1,6 @@
 import allure
+import json
+from allure_commons.types import AttachmentType
 from bs4 import BeautifulSoup
 import re
 
@@ -18,7 +20,6 @@ class BaseEndpoint:
 
     @allure.step("Make sure that the response status code is correct")
     def status_code_verification(self, status_code):
-        print(self.response.text)
         assert self.response.status_code == status_code, \
             f"The status code doesn't match: expected :{status_code} != actual: {self.response.status_code}"
 
@@ -34,7 +35,7 @@ class BaseEndpoint:
                                              f"{type(key)}{self.json[key]} != Expected: {type(value)}{value}")
 
     @allure.step("Check that the expected response message is Bad Request")
-    def invalid_data_response_message(self):
+    def invalid_data_response_message_verification(self):
 
         expected_html_message = """
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -57,7 +58,7 @@ class BaseEndpoint:
                  f"Got:\n{actual_html_message}")
 
     @allure.step("Check that the expected response message is Not authorized")
-    def unauthorized_response_message(self):
+    def unauthorized_response_message_verification(self):
 
         expected_html_message = """
             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -103,7 +104,7 @@ class BaseEndpoint:
                  f"Got:\n{actual_html_message}")
 
     @allure.step("Check that the expected response message")
-    def not_allowed_response_message(self):
+    def not_allowed_response_message_verification(self):
 
         expected_html_message = """
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -124,3 +125,13 @@ class BaseEndpoint:
             assert actual_html_message == expected_html_message, \
                 (f"Expected HTML message does not match. \nExpected:\n{expected_html_message}\n\n"
                  f"Got:\n{actual_html_message}")
+
+    def attach_response(self, response, is_json=True):
+        if is_json:
+            response_body = json.dumps(response, indent=4)
+            attachment_type = AttachmentType.JSON
+        else:
+            response_body = response.text
+            attachment_type = AttachmentType.TEXT
+
+        allure.attach(body=response_body, name="Api Response", attachment_type=attachment_type)
