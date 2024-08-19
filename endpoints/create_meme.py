@@ -35,7 +35,7 @@ class CreateMeme(BaseEndpoint):
         if self.response.status_code == 200:
             self.json = self.response.json()
             self.meme_id = self.json["id"]
-            print(f"Meme is created: {self.json["id"]}, headers: {self.headers}")
+            print(f"Meme is created: {self.json['id']}, headers: {self.headers}")
         else:
             self.json = None
         return self.json, self.response
