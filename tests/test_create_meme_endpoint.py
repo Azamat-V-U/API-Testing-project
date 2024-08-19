@@ -38,7 +38,7 @@ def test_create_meme_invalid_data(create_meme_endpoint, invalid_test_data):
 @allure.feature("POST meme request")
 @allure.story("Meme creation")
 @allure.title("Create meme with the invalid json object")
-@pytest.mark.critical
+@pytest.mark.medium
 def test_create_meme_invalid_json(create_meme_endpoint):
     create_meme_endpoint.create_meme(payload=payload.invalid_json_payload)
     create_meme_endpoint.status_code_verification(status_code=400)

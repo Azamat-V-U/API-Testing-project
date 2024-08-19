@@ -25,7 +25,7 @@ class BaseEndpoint:
 
     @allure.step("Make sure that the id in the request matches with the meme id in the response")
     def id_verification(self, meme_id):
-        assert self.json.get("id") == meme_id, f"Response meme_id: {self.json.get("id")} != {self.meme_id}"
+        assert self.json.get('id') == meme_id, f"Response meme_id: {self.json.get('id')} != {self.meme_id}"
 
     @allure.step("Make sure that the payload parameters match with the parameters in the response json object")
     def payload_parameters_verification(self, payload):
