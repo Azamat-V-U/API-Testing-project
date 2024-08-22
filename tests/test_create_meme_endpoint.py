@@ -12,6 +12,7 @@ payload = PayloadCreateMeme
 @allure.story("Meme creation")
 @allure.title("Create meme with valid data")
 @pytest.mark.critical
+@pytest.mark.smoke
 @pytest.mark.parametrize("valid_test_data", payload.valid_data_create_meme)
 def test_create_meme_valid_data(create_meme_endpoint, delete_meme_endpoint, valid_test_data):
     create_meme_endpoint.create_meme(payload=valid_test_data)
@@ -28,6 +29,7 @@ def test_create_meme_valid_data(create_meme_endpoint, delete_meme_endpoint, vali
 @allure.story("Meme creation")
 @allure.title("Create meme with invalid data")
 @pytest.mark.critical
+@pytest.mark.smoke
 @pytest.mark.parametrize("invalid_test_data", payload.invalid_data_create_meme)
 def test_create_meme_invalid_data(create_meme_endpoint, invalid_test_data):
     create_meme_endpoint.create_meme(payload=invalid_test_data)
@@ -39,6 +41,7 @@ def test_create_meme_invalid_data(create_meme_endpoint, invalid_test_data):
 @allure.story("Meme creation")
 @allure.title("Create meme with the invalid json object")
 @pytest.mark.medium
+@pytest.mark.smoke
 def test_create_meme_invalid_json(create_meme_endpoint):
     create_meme_endpoint.create_meme(payload=payload.invalid_json_payload)
     create_meme_endpoint.status_code_verification(status_code=400)
@@ -49,6 +52,7 @@ def test_create_meme_invalid_json(create_meme_endpoint):
 @allure.story("Meme creation")
 @allure.title("Create meme with the invalid headers")
 @pytest.mark.critical
+@pytest.mark.smoke
 @pytest.mark.parametrize("invalid_test_headers", payload.invalid_headers)
 def test_create_meme_invalid_headers(create_meme_endpoint, invalid_test_headers):
     create_meme_endpoint.create_meme_invalid_headers(
