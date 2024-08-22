@@ -13,6 +13,7 @@ payload = BasePayloads
 @allure.story("Getting a meme")
 @allure.title("Get one meme by id")
 @pytest.mark.critical
+@pytest.mark.smoke
 def test_get_meme_by_valid_id(get_one_meme_endpoint, new_meme_user_1_token):
     get_one_meme_endpoint.get_meme(meme_id=new_meme_user_1_token)
     get_one_meme_endpoint.status_code_verification(status_code=200)
@@ -29,6 +30,7 @@ def test_get_meme_by_valid_id(get_one_meme_endpoint, new_meme_user_1_token):
 @allure.story("Getting a meme")
 @allure.title("Get meme with invalid meme id")
 @pytest.mark.critical
+@pytest.mark.regression
 def test_get_meme_by_not_existing_id(get_one_meme_endpoint):
     get_one_meme_endpoint.get_meme(meme_id=0)
     get_one_meme_endpoint.status_code_verification(status_code=404)
@@ -39,6 +41,7 @@ def test_get_meme_by_not_existing_id(get_one_meme_endpoint):
 @allure.story("Getting a meme")
 @allure.title("Get meme with invalid headers")
 @pytest.mark.medium
+@pytest.mark.extended
 @pytest.mark.parametrize("test_data", payload.invalid_headers)
 def test_get_meme_invalid_headers(get_one_meme_endpoint, new_meme_user_1_token, test_data):
     get_one_meme_endpoint.get_meme_with_invalid_headers(meme_id=new_meme_user_1_token, headers=test_data)
@@ -53,6 +56,7 @@ def test_get_meme_invalid_headers(get_one_meme_endpoint, new_meme_user_1_token, 
 @allure.story("Getting a list of memes")
 @allure.title("Get all memes with valid data")
 @pytest.mark.critical
+@pytest.mark.smoke
 def test_get_all_memes(get_all_memes_endpoint):
     get_all_memes_endpoint.get_all_memes()
     get_all_memes_endpoint.status_code_verification(status_code=200)
@@ -66,6 +70,7 @@ def test_get_all_memes(get_all_memes_endpoint):
 @allure.story("Getting a list of memes")
 @allure.title("Get all memes with invalid headers")
 @pytest.mark.medium
+@pytest.mark.extended
 @pytest.mark.parametrize("invalid_test_data", payload.invalid_headers)
 def test_get_all_memes_invalid_headers(get_all_memes_endpoint, invalid_test_data):
     get_all_memes_endpoint.get_all_memes_with_invalid_token(headers=invalid_test_data)

@@ -12,6 +12,7 @@ payload = BasePayloads
 @allure.story("Deleting a meme")
 @allure.title("Delete a meme with valid data")
 @pytest.mark.critical
+@pytest.mark.smoke
 def test_delete_meme_valid_data(new_meme_user_1_token_for_delete_method, delete_meme_endpoint):
     delete_meme_endpoint.delete_one_meme(meme_id=new_meme_user_1_token_for_delete_method)
     delete_meme_endpoint.status_code_verification(status_code=200)
@@ -25,6 +26,7 @@ def test_delete_meme_valid_data(new_meme_user_1_token_for_delete_method, delete_
 @allure.story("Deleting a meme")
 @allure.title("Delete a meme with other user token")
 @pytest.mark.critical
+@pytest.mark.regression
 def test_delete_meme_with_other_user_token(new_meme_user_2_token, delete_meme_endpoint):
     delete_meme_endpoint.delete_one_meme(meme_id=new_meme_user_2_token)
     delete_meme_endpoint.status_code_verification(status_code=403)
@@ -35,6 +37,7 @@ def test_delete_meme_with_other_user_token(new_meme_user_2_token, delete_meme_en
 @allure.story("Deleting a meme")
 @allure.title("Delete a meme with a non-existing meme_id")
 @pytest.mark.medium
+@pytest.mark.regression
 def test_delete_meme_url_meme_id_none(delete_meme_endpoint):
     delete_meme_endpoint.delete_one_meme(meme_id=None)
     delete_meme_endpoint.status_code_verification(status_code=404)
@@ -45,6 +48,7 @@ def test_delete_meme_url_meme_id_none(delete_meme_endpoint):
 @allure.story("Deleting a meme")
 @allure.title("Delete a meme without meme_id in the url")
 @pytest.mark.medium
+@pytest.mark.extended
 def test_delete_meme_url_empty_meme_id(delete_meme_endpoint):
     delete_meme_endpoint.delete_meme_url_empty_meme_id()
     delete_meme_endpoint.status_code_verification(status_code=405)
@@ -55,6 +59,7 @@ def test_delete_meme_url_empty_meme_id(delete_meme_endpoint):
 @allure.story("Deleting a meme")
 @allure.title("Delete a meme with invalid headers")
 @pytest.mark.critical
+@pytest.mark.extended
 @pytest.mark.parametrize("invalid_test_headers", payload.invalid_headers)
 def test_delete_meme_invalid_headers(delete_meme_endpoint, new_meme_user_1_token, invalid_test_headers):
     delete_meme_endpoint.delete_meme_invalid_headers(meme_id=new_meme_user_1_token, headers=invalid_test_headers)
