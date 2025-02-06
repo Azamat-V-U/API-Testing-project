@@ -49,6 +49,16 @@ def test_get_meme_invalid_headers(get_one_meme_endpoint, new_meme_user_1_token, 
     get_one_meme_endpoint.unauthorized_response_message_verification()
 
 
+@allure.feature("GET meme request")
+@allure.story("Getting a meme")
+@allure.title("Get meme with invalid encoded url")
+@pytest.mark.medium
+@pytest.mark.extended
+def test_get_meme_encoded_url(get_one_meme_endpoint, new_meme_user_1_token):
+    get_one_meme_endpoint.get_meme_with_encoded_url(meme_id=new_meme_user_1_token)
+    get_one_meme_endpoint.status_code_verification(status_code=200)
+
+
 # Positive tests
 
 
@@ -69,7 +79,7 @@ def test_get_all_memes(get_all_memes_endpoint):
 @allure.feature("GET all memes request")
 @allure.story("Getting a list of memes")
 @allure.title("Get all memes with invalid headers")
-@pytest.mark.medium
+@pytest.mark.low
 @pytest.mark.extended
 @pytest.mark.parametrize("invalid_test_data", payload.invalid_headers)
 def test_get_all_memes_invalid_headers(get_all_memes_endpoint, invalid_test_data):

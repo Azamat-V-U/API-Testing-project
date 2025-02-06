@@ -33,6 +33,15 @@ class CreateToken(BaseEndpoint):
         self.attach_response(self.response, is_json=False)
         return self.response, self.response.text
 
+    @allure.step("Send POST request to the 'BaseUrl/authorize' endpoint with invalid payload data")
+    def create_token_json_as_text(self, payload=None):
+        self.response = requests.post(
+            f"{self.url}/authorize",
+            data=payload
+        )
+        self.attach_response(self.response, is_json=False)
+        return self.response, self.response.text
+
     @allure.step("Check the returned json object and the payload name = user")
     def response_json_object_verification(self, payload):
         assert "token" in self.response.json(), f"Token not found in the json object"

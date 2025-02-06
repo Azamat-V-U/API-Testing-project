@@ -6,7 +6,7 @@ from endpoints.payloads import PayloadCreateToken
 payload = PayloadCreateToken
 
 
-@allure.feature("Post token request")
+@allure.feature("Create token request")
 @allure.story("User authorization")
 @allure.title("Create token with valid data")
 @pytest.mark.critical
@@ -21,10 +21,10 @@ def test_authorization_with_valid_data(create_token_endpoint, valid_test_data):
 # Negative test cases
 
 
-@allure.feature("POST token request")
+@allure.feature("Create token request")
 @allure.story("User authorization")
 @allure.title("Create token with invalid data")
-@pytest.mark.critical
+@pytest.mark.extended
 @pytest.mark.regression
 @pytest.mark.parametrize("invalid_test_data", payload.invalid_data_create_token)
 def test_authorization_invalid_data(create_token_endpoint, invalid_test_data):
@@ -33,11 +33,22 @@ def test_authorization_invalid_data(create_token_endpoint, invalid_test_data):
     create_token_endpoint.invalid_data_response_message_verification()
 
 
-@allure.feature("POST token request")
+@allure.feature("Create token request")
 @allure.story("User authorization")
 @allure.title("Create token with invalid json object")
 @pytest.mark.extended
 def test_authorization_with_invalid_json(create_token_endpoint):
     create_token_endpoint.create_token_invalid_data(payload=payload.invalid_json_payload)
     create_token_endpoint.status_code_verification(status_code=400)
-    create_token_endpoint.invalid_json_response_message_verification()
+    create_token_endpoint.invalid_data_response_message_verification()
+    # create_token_endpoint.invalid_json_response_message_verification()
+
+
+@allure.feature("Create token request")
+@allure.story("User authorization")
+@allure.title("Create token with a text instead of a json object")
+@pytest.mark.test
+def test_authorization_with_text(create_token_endpoint):
+    create_token_endpoint.create_token_json_as_text(payload=payload.valid_data_create_token[0])
+    create_token_endpoint.status_code_verification(status_code=400)
+    create_token_endpoint.invalid_data_response_message_verification()

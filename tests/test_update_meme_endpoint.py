@@ -40,7 +40,7 @@ def test_update_meme_payload_invalid_data(update_meme_endpoint, new_meme_user_1_
 
 @allure.feature("UPDATE meme request")
 @allure.story("Updating a meme")
-@allure.title("Updating meme with invalid meme_id in payload")
+@allure.title("Updating meme with invalid meme_id = str in payload")
 @pytest.mark.critical
 @pytest.mark.regression
 def test_update_meme_meme_id_str(update_meme_endpoint, new_meme_user_1_token):

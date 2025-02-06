@@ -28,14 +28,14 @@ class PayloadCreateMeme(BasePayloads):
         {
             "text": "Mister Bin",
             "url": "www.example.by",
-            "tags": ["Sponge Bob", "Cartoon", "some tag"],
+            "tags": [46896, "Cartoon", "some tag"],
             "info": {"colors": ["yellow", "brown", "red"]}
         },
         {
             "text": "Sponge Bob",
             "url": "www.example.com",
-            "tags": ["Sponge Bob", "Cartoon", "some text", "some tag"],
-            "info": {"colors": ["yellow", "brown", "red", "black"]}
+            "tags": [8792, "Cartoon", "some text", "some tag"],
+            "info": {"colors": ["yellow", 89167, "red", "black"]}
         }
     ]
 
@@ -44,10 +44,37 @@ class PayloadCreateMeme(BasePayloads):
             "text": "Sponge Bob"
         },
         {
-            "text": "",
-            "url": "",
-            "tags": [],
-            "info": {}
+            "text": "Sponge Bob",
+            "url": "www.example.com"
+        },
+        {
+            "text": "Sponge Bob",
+            "url": "www.example.com",
+            "tags": ["Sponge Bob", "Cartoon"]
+        },
+        {
+            "text": 1687,
+            "url": "www.example.com",
+            "tags": ["Sponge Bob", "Cartoon"],
+            "info": {"colors": ["yellow", "brown"]}
+        },
+        {
+            "text": "Sponge Bob",
+            "url": 8946,
+            "tags": ["Sponge Bob", "Cartoon"],
+            "info": {"colors": ["yellow", "brown"]}
+        },
+        {
+            "text": "Sponge Bob",
+            "url": "www.example.by",
+            "tags": 4972,
+            "info": {"colors": ["yellow", "brown"]}
+        },
+        {
+            "text": "Sponge Bob",
+            "url": "www.example.by",
+            "tags": ["Sponge Bob", "Cartoon"],
+            "info": 9712
         },
         {}
     ]
@@ -107,6 +134,13 @@ class PayloadUpdateMeme(BasePayloads):
             "tags": [],
             "info": {}
         },
+        {
+            "id": None,
+            "text": "",
+            "url": "",
+            "tags": ["Sponge Bob", "Cartoon"],
+            "info": {}
+        },
         {}
     ]
     valid_data_one_payload = {
@@ -122,13 +156,15 @@ class PayloadCreateToken(BasePayloads):
 
     valid_data_create_token = [
         {"name": fake.name()},
-        {"name": fake.name()},
-        {"name": fake.name()}
+        {"name": "B"},
+        {"name": f"{'b' * 125}"},
+        {"name": f"{'B' * 256}"}
     ]
     invalid_data_create_token = [
         {"name": ""},
         {},
         {"name": 30},
-        {"name": "c" * 256},
-        {"name": "#@%&"}
+        {"name": 0.30},
+        {"name": "c" * 257},
+        {"name": "@%&"}
     ]

@@ -82,6 +82,16 @@ class GetOneMeme(BaseEndpoint):
         print(f"Status code: {self.response.status_code}, message: {self.response.text}")
         return self.response
 
+    @allure.step("Send Get request to the 'BaseUrl%2Fmeme%2F<id>' url.")
+    def get_meme_with_encoded_url(self, meme_id=None):
+        self.response = requests.get(
+            f"{self.url}%2F{meme_id}",
+            headers=self.headers
+        )
+        self.attach_response(self.response, is_json=False)
+        print(f"Status code: {self.response.status_code}, message: {self.response.text}")
+        return self.response
+
     @allure.step("Check that the required fields in the response json object")
     def required_fields_verification(self):
         assert "info" in self.json, "'info' field is missing in the response"
