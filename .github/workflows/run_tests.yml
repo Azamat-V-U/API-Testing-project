@@ -43,3 +43,38 @@ jobs:
       - name: run extended tests
         if: "github.event.inputs.deployment_target == 'extended'"
         run: pytest -v -m extended
+
+  generate-report:
+    runs-on: ubuntu-latest
+    needs: run-tests
+    name: Generate report
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'microsoft' # See 'Supported distributions' for available options
+          java-version: '17'
+      - run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz && sudo
+          tar -zxvf allure-2.30.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - run: allure generate -c allure-results -o _site
+      - name: Store generated report
+        uses: actions/upload-artifact@v3
+        with:
+          name: _site
+          path:
+            _site
+          retention-days: 1
+
+  publish-report:
+    name: Report publication
+    runs-on: ubuntu-latest
+    needs: generate-report
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Upload Pages artifacts
+        uses: actions/upload-pages-artifact@v2
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1.2.9
