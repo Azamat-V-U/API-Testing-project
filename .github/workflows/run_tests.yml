@@ -31,18 +31,26 @@ jobs:
       - name: run all tests
         if: "github.event.inputs.deployment_target == 'all'"
         run: pytest -v
-#        continue-on-error: true
+        continue-on-error: true
       - name: run smoke tests
         if: "github.event.inputs.deployment_target == 'smoke'"
         run: pytest -v -m smoke
-#        continue-on-error: true
+        continue-on-error: true
       - name: run regression tests
         if: "github.event.inputs.deployment_target == 'regression'"
         run: pytest -v -m regression
-#        continue-on-error: true
+        continue-on-error: true
       - name: run extended tests
         if: "github.event.inputs.deployment_target == 'extended'"
         run: pytest -v -m extended
+        continue-on-error: true
+      - name: Save allure report
+        uses: actions/upload-artifact@v4
+        with:
+            name: allure-results
+            path:
+              allure-results
+            retention-days: 1
 
   generate-report:
     runs-on: ubuntu-latest
@@ -56,10 +64,10 @@ jobs:
       - run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz && sudo
           tar -zxvf allure-2.30.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - run: allure generate -c allure-results -o _site
       - name: Store generated report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: _site
           path:
@@ -72,7 +80,7 @@ jobs:
     needs: generate-report
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Upload Pages artifacts
         uses: actions/upload-pages-artifact@v2
       - name: Deploy to GitHub Pages
