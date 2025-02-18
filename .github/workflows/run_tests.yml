@@ -82,7 +82,9 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
       - name: Upload Pages artifacts
-        uses: actions/upload-pages-artifact@v2
+        # uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1.2.9
+        # uses: actions/deploy-pages@v1.2.9
+        uses: actions/deploy-pages@v4
